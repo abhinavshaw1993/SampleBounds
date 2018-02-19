@@ -8,8 +8,8 @@ class AlgoBase:
     __metaclass__ = ABCMeta
 
     def __init__(self, N, T, bound, statistic, confidence, samples):
-        self.N = N
-        self.T = T
+        self.N = N # Sample Size
+        self.T = T # No of trials
         self.bound = bound
         self.statistic = statistic
         self.confidence = confidence
