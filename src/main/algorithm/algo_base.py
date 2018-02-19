@@ -24,7 +24,16 @@ class AlgoBase:
         :return: pandas DataFrame
         """
         pass
+    @abstractmethod
+    def compute_variance(self):
+        """
+        Computes the upper and/or lower bound on the variance of samples
+        :return: pandas DataFrame
+        """
+        pass
 
     def compute_statistic(self):
         if self.statistic == "mean":
             return self.compute_mean()
+        if self.statistic == "variance":
+            return self.compute_variance()
