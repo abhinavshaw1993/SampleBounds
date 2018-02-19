@@ -1,0 +1,7 @@
+sample_statistics:
+  N: 100
+  T: 10
+  left_support: 0
+  right_support: 1
+  mean: 0.5
+  stdev: 0.1

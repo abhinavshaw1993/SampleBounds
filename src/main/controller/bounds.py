@@ -3,10 +3,12 @@ from main.algorithm.order_stats import ORDSTAT
 from main.algorithm.chernoff_hoeffding import ChenoffHoeffding
 from main.utils.plotting import plot_statistic
 from main.utils.sample_generator import SampleGenerator
+import yaml
 
 
 class BoundsExperiment:
     def __init__(self, n=100, t=10, bound="both", statistic="mean", algo=None, confidence=0.95):
+
         self.N = n
         self.T = t
         self.bound = bound
@@ -44,10 +46,9 @@ class BoundsExperiment:
                     result_df = data
                 else:
                     result_df.append(data, ignore_index=True)
-
-        kwargs = {'N': self.N, 'mean': 0.5}
-        plot_statistic(result_df, kwargs=kwargs)
+        plot_statistic(result_df, N=self.N, T=self.T)
 
 if __name__ == "__main__":
-    B = BoundsExperiment(algo=["CLT", "ORDSTAT"])
+    # B = BoundsExperiment(algo=["CLT", "ORDSTAT"])
+    B = BoundsExperiment(algo=["CHERNOFF-HOEFFDING"])
     B.run_experiments()

@@ -15,7 +15,7 @@ class ChenoffHoeffding(AlgoBase):
         for N in xrange(1, self.N+1):
             sg = sample_generator.SampleGenerator(self.N, self.T)
             samples = sg.normal()
-            e = self.compute_epsilon()
+            e = self.compute_epsilon(N)
             for T in xrange(self.T):
                 mean = np.mean(samples[:,T])
 
@@ -30,10 +30,10 @@ class ChenoffHoeffding(AlgoBase):
         bounds_df = pd.DataFrame(data=bound_limits, columns=ChenoffHoeffding.columns)
         return bounds_df
 
-    def compute_epsilon(self):
+    def compute_epsilon(self, N):
         """
         Computes epsilon (Bound parameter for Chernoff-Hoeffding bounds.
         :return: Returns epsilon.
         """
-        intermediate = - np.log((1 - self.confidence) / 2.0) / (2.0 * self.N)
+        intermediate = - np.log((1 - self.confidence) / 2.0) / (2.0 * N)
         return np.sqrt(intermediate)

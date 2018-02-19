@@ -10,7 +10,7 @@ Samples from the following distributions can be generated
 """
 
 from scipy.stats import truncnorm
-
+import yaml
 
 class SampleGenerator:
     # TODO: Add code/methods for generating distributions
@@ -20,12 +20,15 @@ class SampleGenerator:
         :param N: Number of samples
         :param T: Number of times to perform sampling
         """
+        with open("../resources/config.yml", "r") as ymlfile:
+            cfg = yaml.load(ymlfile)
+
         self.N = N
         self.T = T
-        self.left = 0
-        self.right = 1
-        self.mean = 0.5
-        self.std = 0.1
+        self.left = cfg['sample_statistics']['left_support']
+        self.right = cfg['sample_statistics']['right_support']
+        self.mean = cfg['sample_statistics']['mean']
+        self.std = cfg['sample_statistics']['stdev']
         # TODO: Add distribution relevant parameters like mean, std, alpha, beta etc.
 
     def normal(self):
