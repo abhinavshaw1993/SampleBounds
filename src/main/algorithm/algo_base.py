@@ -6,6 +6,7 @@ import seaborn as sns
 
 class AlgoBase:
     __metaclass__ = ABCMeta
+    columns = ["N", "Observations", "BoundType", "Unit"]
 
     def __init__(self, N, T, bound, statistic, confidence, samples):
         """
@@ -30,7 +31,7 @@ class AlgoBase:
         """
         pass
     
-    @abstractmethod
+    # @abstractmethod
     def compute_variance(self):
         """
         Computes the upper and/or lower bound on the variance of samples
