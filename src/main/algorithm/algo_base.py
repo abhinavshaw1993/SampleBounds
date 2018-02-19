@@ -24,6 +24,7 @@ class AlgoBase:
         :return: pandas DataFrame
         """
         pass
+    
     @abstractmethod
     def compute_variance(self):
         """
