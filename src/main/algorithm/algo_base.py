@@ -10,9 +10,9 @@ class AlgoBase:
     def __init__(self, N, T, bound, statistic, confidence, samples):
         self.N = N # Sample Size
         self.T = T # No of trials
-        self.bound = bound
-        self.statistic = statistic
-        self.confidence = confidence
+        self.bound = bound # Type of Bound: Upper/Lower
+        self.statistic = statistic # what kind of statistical property eg mean, variance etc.
+        self.confidence = confidence # value of confidence 
         self.samples = samples
 
     # TODO: add more abstract methods for computing variance etc.
