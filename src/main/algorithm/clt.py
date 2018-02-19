@@ -21,13 +21,13 @@ class CLT(AlgoBase):
 
                 z_score = t.ppf(q=(self.confidence + (1 - self.confidence) / 2.0), df=df, loc=est_mean, scale=est_std)
 
-                if self.statistic == "upper":
-                    boundsLimits.append([N, est_mean + est_mean_error * z_score, 'Upper Bound', trials])
-                elif self.statistic == "lower":
-                    boundsLimits.append([N, est_mean - est_mean_error * z_score, 'Upper Bound', trials])
+                if self.bound == "upper":
+                    boundsLimits.append([N, est_mean + est_mean_error * z_score, 'Upper CLT', trials+1])
+                elif self.bound == "lower":
+                    boundsLimits.append([N, est_mean - est_mean_error * z_score, 'Lower CLT', trials+1])
                 else:
-                    boundsLimits.append([N, est_mean + est_mean_error * z_score, 'Upper Bound', trials])
-                    boundsLimits.append([N, est_mean - est_mean_error * z_score, 'Lower Bound', trials])
+                    boundsLimits.append([N, est_mean + est_mean_error * z_score, 'Upper CLT', trials+1])
+                    boundsLimits.append([N, est_mean - est_mean_error * z_score, 'Lower CLT', trials+1])
 
         boundsDF = pd.DataFrame(data=boundsLimits, columns=["N", "Observations", "BoundType", "Unit"])
         return boundsDF
