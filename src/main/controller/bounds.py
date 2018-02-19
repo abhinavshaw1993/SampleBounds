@@ -1,5 +1,6 @@
 from main.algorithm.clt import CLT
 from main.algorithm.order_stats import ORDSTAT
+from main.algorithm.chernoff_hoeffding import CH
 from main.utils.plotting import plot_statistic
 from main.utils.sample_generator import SampleGenerator
 
@@ -30,6 +31,14 @@ class BoundsExperiment:
 
             if algo == "ORDSTAT":
                 computer = ORDSTAT(self.N, self.T, self.bound, self.statistic, self.confidence, samples)
+                data = computer.compute_statistic()
+                if result_df is None:
+                    result_df = data
+                else:
+                    result_df.append(data, ignore_index=True)
+
+            if algo == "CHERNOFF-HOEFFDING":
+                computer = CH(self.N, self.T, self.bound, self.statistic, self.confidence, samples)
                 data = computer.compute_statistic()
                 if result_df is None:
                     result_df = data
