@@ -13,11 +13,12 @@ class ChenoffHoeffding(AlgoBase):
         bound_limits = list()
 
         for N in xrange(1, self.N+1):
-            sg = sample_generator.SampleGenerator(self.N, self.T)
-            samples = sg.normal()
+            sg = sample_generator.SampleGenerator(N, self.T)
             e = self.compute_epsilon(N)
+            samples = sg.normal()
+
             for T in xrange(self.T):
-                mean = np.mean(samples[:,T])
+                mean = np.mean(samples[:, T])
 
                 if self.bound == "upper":
                     bound_limits.append([N, mean + e, 'Upper CH', T+1])

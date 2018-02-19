@@ -36,5 +36,5 @@ class SampleGenerator:
         :return: samples from the normal distribution with support [a, b]
         """
         a, b = (self.left - self.mean) / self.std, (self.right - self.mean) / self.std
-        samples = truncnorm.rvs(a=a, b=b, loc=self.mean, scale=self.std, size=(self.T, self.N))
+        samples = truncnorm.rvs(a=a, b=b, loc=self.mean, scale=self.std, size=(self.N, self.T))
         return samples

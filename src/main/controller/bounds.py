@@ -1,9 +1,9 @@
 from main.algorithm.clt import CLT
 from main.algorithm.order_stats import ORDSTAT
 from main.algorithm.chernoff_hoeffding import ChenoffHoeffding
+from main.algorithm.massart import Massart
 from main.utils.plotting import plot_statistic
 from main.utils.sample_generator import SampleGenerator
-import yaml
 
 
 class BoundsExperiment:
@@ -46,9 +46,19 @@ class BoundsExperiment:
                     result_df = data
                 else:
                     result_df.append(data, ignore_index=True)
+
+            if algo == "MASSART":
+                computer = Massart(self.N, self.T, self.bound, self.statistic, self.confidence, samples)
+                data = computer.compute_statistic()
+                if result_df is None:
+                    result_df = data
+                else:
+                    result_df.append(data, ignore_index=True)
+
         plot_statistic(result_df, N=self.N, T=self.T)
 
 if __name__ == "__main__":
     # B = BoundsExperiment(algo=["CLT", "ORDSTAT"])
-    B = BoundsExperiment(algo=["CHERNOFF-HOEFFDING"])
+    # B = BoundsExperiment(algo=["CHERNOFF-HOEFFDING"])
+    B = BoundsExperiment(algo=["MASSART"])
     B.run_experiments()
