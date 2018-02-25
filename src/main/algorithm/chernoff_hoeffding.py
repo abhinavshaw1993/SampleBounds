@@ -1,7 +1,7 @@
 from algo_base import AlgoBase
-from main.utils import sample_generator
 import numpy as np
 import pandas as pd
+
 
 class ChenoffHoeffding(AlgoBase):
     """
@@ -12,18 +12,17 @@ class ChenoffHoeffding(AlgoBase):
 
         bound_limits = list()
 
-        for N in xrange(1, self.N+1):
-            sg = sample_generator.SampleGenerator(N, self.T)
+        for N in xrange(1, self.N + 1):
             e = self.compute_epsilon(N)
-            samples = sg.normal()
+            samples = self.sample_generator.generate_samples(N, self.T)
 
             for T in xrange(self.T):
                 mean = np.mean(samples[:, T])
 
                 if self.bound == "upper":
-                    bound_limits.append([N, mean + e, 'Upper CH', T+1])
+                    bound_limits.append([N, mean + e, 'Upper CH', T + 1])
                 elif self.bound == "lower":
-                    bound_limits.append([N, mean - e, 'Lower CH', T+1])
+                    bound_limits.append([N, mean - e, 'Lower CH', T + 1])
                 else:
                     bound_limits.append([N, mean + e, 'Upper CH', T + 1])
                     bound_limits.append([N, mean - e, 'Lower CH', T + 1])

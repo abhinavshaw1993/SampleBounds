@@ -1,14 +1,12 @@
 from abc import ABCMeta, abstractmethod
-import matplotlib.pyplot as plt
-import pandas as pd
-import seaborn as sns
+from main.utils.sample_generator import SampleGenerator
 
 
 class AlgoBase:
     __metaclass__ = ABCMeta
     columns = ["N", "Observations", "BoundType", "Unit"]
 
-    def __init__(self, N, T, bound, statistic, confidence, samples):
+    def __init__(self, N, T, bound, statistic, confidence):
         """
         Initialize the different properties to create the bounds for sample distribution.
         Here, N= Sample Size, T= No. of Trails,
@@ -19,7 +17,7 @@ class AlgoBase:
         self.bound = bound 
         self.statistic = statistic
         self.confidence = confidence
-        self.samples = samples
+        self.sample_generator = SampleGenerator()
 
     # TODO: add more abstract methods for computing variance etc.
 

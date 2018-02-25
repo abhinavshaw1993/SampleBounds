@@ -16,11 +16,13 @@ def plot_statistic(df, true_mean=True, **kwargs):
 
     # print(kwargs)
     N = kwargs['N']
-    plt.figure(figsize=(10, 10))
+    plt.figure(figsize=(20, 20))
+
+    plt.subplot()
 
     if true_mean:
         mean = cfg['sample_statistics']['mean']
-        plt.plot(np.arange(1, N+1), [mean]*N, label="True Mean")
+        plt.plot(np.arange(1, N+1), [mean]*N, label="True Mean", color='black')
 
     try:
         assert isinstance(df, pd.DataFrame)
@@ -28,8 +30,7 @@ def plot_statistic(df, true_mean=True, **kwargs):
     except Exception as e:
         print e
 
-    plt.subplot()
     sns.tsplot(data=df, time="N", value="Observations", condition="BoundType", unit="Unit", ci=100)
-    # sns.factorplot(x='N', y='Observations', hue='BoundType', data=df, size=10)
+    plt.title("Bounds on " + kwargs['statistic'])
     plt.show()
 

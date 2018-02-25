@@ -5,3 +5,5 @@ sample_statistics:
   right_support: 1.0
   mean: 0.5
   stdev: 0.1
+  seed: 100
+  distribution: "normal"

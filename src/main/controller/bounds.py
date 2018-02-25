@@ -4,7 +4,7 @@ from main.algorithm.chernoff_hoeffding import ChenoffHoeffding
 from main.algorithm.massart import Massart
 from main.algorithm.bootstrap import Bootstrap
 from main.utils.plotting import plot_statistic
-from main.utils.sample_generator import SampleGenerator
+import pandas as pd
 
 
 class BoundsExperiment:
@@ -16,59 +16,47 @@ class BoundsExperiment:
         self.statistic = statistic
         self.algo = ["CLT"] if algo is None else algo
         self.confidence = confidence
-        self.sample_generator = SampleGenerator(self.N, self.T)
 
     def run_experiments(self):
-        result_df = None
-
-        samples = self.sample_generator.normal()
+        result_df = []
 
         for algo in self.algo:
+            print "Computing bounds on " + self.statistic + " using " + algo + " technique"
+
             if algo == "CLT":
-                computer = CLT(self.N, self.T, self.bound, self.statistic, self.confidence, samples)
+                computer = CLT(self.N, self.T, self.bound, self.statistic, self.confidence)
                 data = computer.compute_statistic()
-                if result_df is None:
-                    result_df = data
-                else:
-                    result_df.append(data, ignore_index=True)
+                result_df.append(data)
 
             if algo == "ORDSTAT":
-                computer = ORDSTAT(self.N, self.T, self.bound, self.statistic, self.confidence, samples)
+                computer = ORDSTAT(self.N, self.T, self.bound, self.statistic, self.confidence)
                 data = computer.compute_statistic()
-                if result_df is None:
-                    result_df = data
-                else:
-                    result_df.append(data, ignore_index=True)
+                result_df.append(data)
 
             if algo == "CHERNOFF-HOEFFDING":
-                computer = ChenoffHoeffding(self.N, self.T, self.bound, self.statistic, self.confidence, samples)
+                computer = ChenoffHoeffding(self.N, self.T, self.bound, self.statistic, self.confidence)
                 data = computer.compute_statistic()
-                if result_df is None:
-                    result_df = data
-                else:
-                    result_df.append(data, ignore_index=True)
+                result_df.append(data)
 
             if algo == "MASSART":
-                computer = Massart(self.N, self.T, self.bound, self.statistic, self.confidence, samples)
+                computer = Massart(self.N, self.T, self.bound, self.statistic, self.confidence)
                 data = computer.compute_statistic()
-                if result_df is None:
-                    result_df = data
-                else:
-                    result_df.append(data, ignore_index=True)
+                result_df.append(data)
 
             if algo == "BOOTSTRAP":
-                computer = Bootstrap(self.N, self.T, self.bound, self.statistic, self.confidence, samples)
+                computer = Bootstrap(self.N, self.T, self.bound, self.statistic, self.confidence)
                 data = computer.compute_statistic()
-                if result_df is None:
-                    result_df = data
-                else:
-                    result_df.append(data, ignore_index=True)
+                result_df.append(data)
 
-        plot_statistic(result_df, N=self.N, T=self.T)
+        result = pd.concat(result_df, ignore_index=True)
+        plot_statistic(result, N=self.N, T=self.T, statistic=self.statistic)
+
 
 if __name__ == "__main__":
-    # B = BoundsExperiment(algo=["CLT", "ORDSTAT"])
+    # B = BoundsExperiment(algo=["ORDSTAT", "CLT"])
+    # B = BoundsExperiment(algo=["CLT"])
+    B = BoundsExperiment(algo=["ORDSTAT"])
     # B = BoundsExperiment(algo=["CHERNOFF-HOEFFDING"])
     # B = BoundsExperiment(algo=["MASSART"])
-    B = BoundsExperiment(algo=["BOOTSTRAP"])
+    # B = BoundsExperiment(algo=["BOOTSTRAP"])
     B.run_experiments()

@@ -2,7 +2,6 @@ from algo_base import AlgoBase
 import numpy as np
 import scipy as sc
 import pandas as pd
-from main.utils import sample_generator
 
 
 class Bootstrap(AlgoBase):
@@ -21,19 +20,18 @@ class Bootstrap(AlgoBase):
         bound_limits = list()
 
         for N in xrange(2, self.N + 1):
-            sg = sample_generator.SampleGenerator(N, self.T)
-            samples = sg.normal()
+            samples = self.sample_generator.generate_samples(N, self.T)
 
             for T in range(self.T):
                 m_l, m_u = self.compute_boostrap_experiment(N, samples[:, T], resample_count, bootstrap_exp_count)
 
                 if self.bound == "lower":
-                    bound_limits.append([N, m_l, 'Lower Bootstrap', T+1])
+                    bound_limits.append([N, m_l, 'Lower Bootstrap', T + 1])
                 elif self.bound == "upper":
-                    bound_limits.append([N, m_u, 'Upper Bootstrap', T+1])
+                    bound_limits.append([N, m_u, 'Upper Bootstrap', T + 1])
                 else:
-                    bound_limits.append([N, m_l, 'Lower Bootstrap', T+1])
-                    bound_limits.append([N, m_u, 'Upper Bootstrap', T+1])
+                    bound_limits.append([N, m_l, 'Lower Bootstrap', T + 1])
+                    bound_limits.append([N, m_u, 'Upper Bootstrap', T + 1])
 
         return pd.DataFrame(data=bound_limits, columns=Bootstrap.columns)
 
@@ -51,9 +49,9 @@ class Bootstrap(AlgoBase):
         for i in range(bootstrap_exp_count):
             bootstrap_samples = samples[np.random.randint(0, N, resample_count)]
             x_bar_star = np.mean(bootstrap_samples)
-            delta_star.append(x_bar_star-sample_mean)
+            delta_star.append(x_bar_star - sample_mean)
 
         # for 95% confidence.
         delta = sc.stats.mstats.mquantiles(delta_star, (0.05, 0.95))
 
-        return sample_mean-delta[1], sample_mean-delta[0]
+        return sample_mean - delta[1], sample_mean - delta[0]
