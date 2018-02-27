@@ -53,9 +53,9 @@ class BoundsExperiment:
 
 
 if __name__ == "__main__":
-    # B = BoundsExperiment(algo=["ORDSTAT", "CLT"])
+    B = BoundsExperiment(algo=["ORDSTAT", "BOOTSTRAP"])
     # B = BoundsExperiment(algo=["CLT"])
-    B = BoundsExperiment(algo=["ORDSTAT"])
+    # B = BoundsExperiment(algo=["ORDSTAT"])
     # B = BoundsExperiment(algo=["CHERNOFF-HOEFFDING"])
     # B = BoundsExperiment(algo=["MASSART"])
     # B = BoundsExperiment(algo=["BOOTSTRAP"])

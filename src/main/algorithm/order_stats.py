@@ -6,14 +6,19 @@ import pandas as pd
 
 
 class ORDSTAT(AlgoBase):
-    def compute_delta(self):
+
+    def compute_delta(self, N):
         # TODO: Use N and confidence to compute delta
         # TODO: Alternative: have a table for N, Confidence and delta
         # NOTE: Current implementation works for only N = 100
-        return 0.998
+        delta_values = pd.read_csv("../resources/delta_values.csv")
+        delta = delta_values[delta_values["N"] == N]["delta"]
+        # print "delta for " + str(N) + " is: ", np.float(delta)
+        return np.float(delta)
 
     def compute_cdf(self, N):
-        delta = self.compute_delta()
+
+        delta = self.compute_delta(N)
 
         upper_envelope = lower_envelope = None
 
