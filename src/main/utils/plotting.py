@@ -14,6 +14,8 @@ def plot_statistic(df, true_mean=True, **kwargs):
     with open("../resources/config.yml", "r") as ymlfile:
         cfg = yaml.load(ymlfile)
 
+    err_style = cfg['plot_configs']['err_style']
+    interpolate = cfg['plot_configs']['interpolate']
     # print(kwargs)
     N = kwargs['N']
     plt.figure(figsize=(20, 20))
@@ -30,7 +32,8 @@ def plot_statistic(df, true_mean=True, **kwargs):
     except Exception as e:
         print e
 
-    sns.tsplot(data=df, time="N", value="Observations", condition="BoundType", unit="Unit", ci=100)
+    sns.tsplot(data=df, time="N", value="Observations", condition="BoundType", unit="Unit", ci=100, err_style=err_style
+            , interpolate=interpolate)
     plt.title("Bounds on " + kwargs['statistic'])
     plt.show()
 

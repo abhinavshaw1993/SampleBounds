@@ -6,4 +6,7 @@ sample_statistics:
   mean: 0.5
   stdev: 0.1
   seed: 100
-  distribution: "normal"
+  distribution: "exponential"
+plot_configs:
+  err_style: "ci_bars"
+  interpolate: True

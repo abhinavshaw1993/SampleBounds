@@ -11,6 +11,7 @@ Samples from the following distributions can be generated
 
 import numpy as np
 from scipy.stats import truncnorm
+from scipy.stats import truncexpon
 import yaml
 
 
@@ -36,6 +37,10 @@ class SampleGenerator:
     def generate_samples(self, N, T):
         if self.distribution == "normal":
             return self.normal(N, T)
+        elif self.distribution == "uniform":
+            return self.uniform(N, T)
+        elif self.distribution == "exponential":
+            return self.exponential(N, T)
         else:
             raise NotImplementedError
 
@@ -47,3 +52,21 @@ class SampleGenerator:
         a, b = (self.left - self.mean) / self.std, (self.right - self.mean) / self.std
         samples = truncnorm.rvs(a=a, b=b, loc=self.mean, scale=self.std, size=(N, T))
         return samples
+
+    def uniform(self, N, T):
+        """
+        :return: samples from the uniform distribution with support [self.left, self.right]
+        """
+        np.random.seed(self.random_seed)
+        a, b = self.left, self.right
+        return np.random.uniform(a, b, size=(N, T))
+
+    def exponential(self, N, T):
+        """
+        :return: samples from the uniform distribution with support [self.left, self.right]
+        """
+        b = self.right
+        mean = self.mean
+        stdev = self.std
+        np.random.seed(self.random_seed)
+        return truncexpon.rvs(b=b, loc=mean-0.05, scale=stdev, size=(N, T))

@@ -16,9 +16,8 @@ class Massart(AlgoBase):
         bound_limits = list()
 
         for N in range(3, self.N + 1):
-            sg = sample_generator.SampleGenerator(N, self.T)
             e = self.compute_epsilon(N)
-            samples = sg.normal()
+            samples = self.sample_generator.generate_samples(N, self.T)
 
             for T in range(self.T):
                 m_l, m_u = self.estimate_bound(N, samples[:, T], e)
