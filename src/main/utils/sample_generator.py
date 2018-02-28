@@ -5,13 +5,14 @@ Samples from the following distributions can be generated
  - Normal distribution
  - Beta distribution
  - Exponential
- - Double Exponential
- - Mixture of gaussians
+
+The module will no start returning the mean as well, since it is hard to control the mean
+
 """
 
 import numpy as np
 from scipy.stats import truncnorm
-from scipy.stats import truncexpon
+from scipy.stats import expon
 import yaml
 
 
@@ -28,8 +29,6 @@ class SampleGenerator:
 
         self.left = cfg['sample_statistics']['left_support']
         self.right = cfg['sample_statistics']['right_support']
-        self.mean = cfg['sample_statistics']['mean']
-        self.std = cfg['sample_statistics']['stdev']
         self.distribution = cfg['sample_statistics']['distribution']
         self.random_seed = cfg['sample_statistics']['seed']
         # TODO: Add distribution relevant parameters like mean, std, alpha, beta etc.
@@ -48,6 +47,11 @@ class SampleGenerator:
         """
         :return: samples from the normal distribution with support [self.left, self.right]
         """
+        with open("../resources/config.yml", "r") as ymlfile:
+            cfg = yaml.load(ymlfile)
+
+        self.mean = cfg['normal']['true_mean']
+        self.std = cfg['normal']['scale']
         np.random.seed(self.random_seed)
         a, b = (self.left - self.mean) / self.std, (self.right - self.mean) / self.std
         samples = truncnorm.rvs(a=a, b=b, loc=self.mean, scale=self.std, size=(N, T))
@@ -57,16 +61,25 @@ class SampleGenerator:
         """
         :return: samples from the uniform distribution with support [self.left, self.right]
         """
+        a = self.left
+        b = self.right
         np.random.seed(self.random_seed)
-        a, b = self.left, self.right
         return np.random.uniform(a, b, size=(N, T))
 
     def exponential(self, N, T):
         """
         :return: samples from the uniform distribution with support [self.left, self.right]
+        Notes - We'll be using exponential with a support 0, 1. To achieve this we'll be
+        truncating the exponential distribution after 1. The support of the exponential
+        distribution is from 0 to infinity by default. We will be keeping the scale low so that
+        not a lot of samples are truncated from the distribution and we have some consistency.
         """
-        b = self.right
-        mean = self.mean
-        stdev = self.std
+        with open("../resources/config.yml", "r") as ymlfile:
+            cfg = yaml.load(ymlfile)
+
+        loc = cfg["exponential"]["loc"]
+        scale = cfg["exponential"]["scale"]
         np.random.seed(self.random_seed)
-        return truncexpon.rvs(b=b, loc=mean-0.05, scale=stdev, size=(N, T))
+        samples = expon.rvs(loc=loc, scale=scale, size=(N, T))
+        # print(np.mean(samples[:, 1]))
+        return samples

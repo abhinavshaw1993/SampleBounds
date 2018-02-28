@@ -1,12 +1,29 @@
 sample_statistics:
   N: 100
-  T: 10
+  T: 1000
   left_support: 0.0
   right_support: 1.0
-  mean: 0.5
-  stdev: 0.1
   seed: 100
-  distribution: "exponential"
+  distribution: "uniform"
 plot_configs:
   err_style: "ci_bars"
   interpolate: True
+  percentile: 95
+uniform:
+  left_support: 0.0
+  right_support: 1.0
+  true_mean: 0.5
+normal:
+  left_support: 0.0
+  right_support: 1.0
+  true_mean: 0.5
+  scale: 0.1
+exponential:
+  loc: 0.0
+  scale: 0.1
+  true_mean: 0.1
+data_processing_details:
+  process_mean: True
+  process_std: False
+  process_percentiles: True
+  percentiles: [95]

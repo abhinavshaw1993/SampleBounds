@@ -4,11 +4,12 @@ from main.algorithm.chernoff_hoeffding import ChenoffHoeffding
 from main.algorithm.massart import Massart
 from main.algorithm.bootstrap import Bootstrap
 from main.utils.plotting import plot_statistic
+from main.utils.data_frame_processor import ProcessDataframe
 import pandas as pd
 
 
 class BoundsExperiment:
-    def __init__(self, n=100, t=10, bound="both", statistic="mean", algo=None, confidence=0.95):
+    def __init__(self, n=100, t=1000, bound="both", statistic="mean", algo=None, confidence=0.95):
 
         self.N = n
         self.T = t
@@ -49,6 +50,8 @@ class BoundsExperiment:
                 result_df.append(data)
 
         result = pd.concat(result_df, ignore_index=True)
+        proc_df = ProcessDataframe(result)
+        result = proc_df.process_dataframe(result)
         plot_statistic(result, N=self.N, T=self.T, statistic=self.statistic)
 
 
