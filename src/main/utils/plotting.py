@@ -5,7 +5,7 @@ import numpy as np
 import yaml
 
 
-def plot_statistic(df, true_mean=True, **kwargs):
+def plot_statistic(df, N, T, true_mean=None, **kwargs):
     """
     :param df: pandas DataFrame containing upper/lower bounds for a statistic (mean, variance etc.)
     :param true_mean: Plot True mean if True.
@@ -16,23 +16,11 @@ def plot_statistic(df, true_mean=True, **kwargs):
 
     err_style = cfg['plot_configs']['err_style']
     interpolate = cfg['plot_configs']['interpolate']
-    distribution = cfg['sample_statistics']['distribution']
-    T = cfg['sample_statistics']['T']
-
-    N = kwargs['N']
     plt.figure(figsize=(20, 20))
-
     plt.subplot()
 
     if true_mean:
-        if distribution == 'exponential':
-            mean = cfg['exponential']['true_mean']
-        elif distribution == 'normal':
-            mean = cfg['normal']['true_mean']
-        elif distribution == 'uniform':
-            mean = cfg['uniform']['true_mean']
-
-        plt.plot(np.arange(1, N+1), [mean]*N, label="True Mean", color='black')
+        plt.plot(np.arange(1, N+1), [true_mean]*N, label="True Mean", color='black')
 
     try:
         assert isinstance(df, pd.DataFrame)

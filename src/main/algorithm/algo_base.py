@@ -1,23 +1,23 @@
 from abc import ABCMeta, abstractmethod
-from main.utils.sample_generator import SampleGenerator
 
 
 class AlgoBase:
     __metaclass__ = ABCMeta
     columns = ["N", "Observations", "BoundType", "Unit"]
 
-    def __init__(self, N, T, bound, statistic, confidence):
+    def __init__(self, N, T, bound, statistic, confidence, sample_generator):
         """
         Initialize the different properties to create the bounds for sample distribution.
         Here, N= Sample Size, T= No. of Trails,
         bound= Type of Bound: Upper/Lower, statistic= mean/variance etc, confidence= value of confidence between 0-1
         """
+
         self.N = N 
-        self.T = T 
-        self.bound = bound 
+        self.T = T
+        self.bound = bound
         self.statistic = statistic
         self.confidence = confidence
-        self.sample_generator = SampleGenerator()
+        self.sample_generator = sample_generator
 
     # TODO: add more abstract methods for computing variance etc.
 

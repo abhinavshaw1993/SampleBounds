@@ -93,7 +93,7 @@ class ProcessDataframe:
         This function processes variance values.
         """
 
-        # Applying some transformations for meanhere.
+        # Applying some transformations for Variance here.
         var_observations = self.df.groupby(["BoundType", "N"], as_index=False)["Observations"].var()
         var_observations["BoundType"] = "Var" + var_observations["BoundType"]
         var_observations["Unit"] = 1
