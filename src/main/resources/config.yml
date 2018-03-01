@@ -3,6 +3,9 @@ sample_statistics:
   T: 1000
   left_support: 0.0
   right_support: 1.0
+  bound: both
+  confidence: 0.95
+  statistic: mean
   seed: 100
   distribution: "uniform"
 plot_configs:
@@ -23,7 +26,7 @@ exponential:
   scale: 0.1
   true_mean: 0.1
 data_processing_details:
-  process_mean: True
-  process_std: False
+  process_mean: False
   process_percentiles: True
+  process_ts: False
   percentiles: [95]

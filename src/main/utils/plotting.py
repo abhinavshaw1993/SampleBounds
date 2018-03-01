@@ -16,14 +16,22 @@ def plot_statistic(df, true_mean=True, **kwargs):
 
     err_style = cfg['plot_configs']['err_style']
     interpolate = cfg['plot_configs']['interpolate']
-    # print(kwargs)
+    distribution = cfg['sample_statistics']['distribution']
+    T = cfg['sample_statistics']['T']
+
     N = kwargs['N']
     plt.figure(figsize=(20, 20))
 
     plt.subplot()
 
     if true_mean:
-        mean = cfg['sample_statistics']['mean']
+        if distribution == 'exponential':
+            mean = cfg['exponential']['true_mean']
+        elif distribution == 'normal':
+            mean = cfg['normal']['true_mean']
+        elif distribution == 'uniform':
+            mean = cfg['uniform']['true_mean']
+
         plt.plot(np.arange(1, N+1), [mean]*N, label="True Mean", color='black')
 
     try:
@@ -32,8 +40,9 @@ def plot_statistic(df, true_mean=True, **kwargs):
     except Exception as e:
         print e
 
-    sns.tsplot(data=df, time="N", value="Observations", condition="BoundType", unit="Unit", ci=100, err_style=err_style
-            , interpolate=interpolate)
+    sns.tsplot(data=df, time="N", value="Observations", condition="BoundType", unit="Unit", ci=[100], err_style=err_style
+            , interpolate=interpolate, n_boot=T)
+
     plt.title("Bounds on " + kwargs['statistic'])
     plt.show()
 

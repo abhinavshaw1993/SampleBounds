@@ -5,18 +5,44 @@ from main.algorithm.massart import Massart
 from main.algorithm.bootstrap import Bootstrap
 from main.utils.plotting import plot_statistic
 from main.utils.data_frame_processor import ProcessDataframe
+import yaml
 import pandas as pd
 
 
 class BoundsExperiment:
-    def __init__(self, n=100, t=1000, bound="both", statistic="mean", algo=None, confidence=0.95):
 
-        self.N = n
-        self.T = t
-        self.bound = bound
-        self.statistic = statistic
+    def __init__(self, n=None, t=None, bound=None, statistic=None, algo=None, confidence=None):
+
+        # Reading Default Values form config file.
+        with open("../resources/config.yml", "r") as ymlfile:
+            cfg = yaml.load(ymlfile)
+
+        if not n:
+            self.N = cfg["sample_statistics"]["N"]
+        else:
+            self.N = n
+
+        if not t:
+            self.T = cfg["sample_statistics"]["T"]
+        else:
+            self.T = t
+
+        if not bound:
+            self.bound = cfg["sample_statistics"]["bound"]
+        else:
+            self.bound = bound
+
+        if not statistic:
+            self.statistic = cfg["sample_statistics"]["statistic"]
+        else:
+            self.statistic = statistic
+
+        if not confidence:
+            self.confidence = cfg["sample_statistics"]["confidence"]
+        else:
+            self.confidence = confidence
+
         self.algo = ["CLT"] if algo is None else algo
-        self.confidence = confidence
 
     def run_experiments(self):
         result_df = []
@@ -56,9 +82,9 @@ class BoundsExperiment:
 
 
 if __name__ == "__main__":
-    # B = BoundsExperiment(algo=["ORDSTAT", "CLT"])
+    B = BoundsExperiment(algo=["ORDSTAT", "CLT"])
     # B = BoundsExperiment(algo=["CLT"])
-    B = BoundsExperiment(algo=["ORDSTAT"])
+    # B = BoundsExperiment(algo=["ORDSTAT"])
     # B = BoundsExperiment(algo=["CHERNOFF-HOEFFDING"])
     # B = BoundsExperiment(algo=["MASSART"])
     # B = BoundsExperiment(algo=["BOOTSTRAP"])

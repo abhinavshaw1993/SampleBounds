@@ -24,15 +24,15 @@ class ProcessDataframe:
             cfg = yaml.load(ymlfile)
 
         process_mean = cfg['data_processing_details']['process_mean']
-        process_std = cfg['data_processing_details']['process_std']
         process_percentiles = cfg['data_processing_details']['process_percentiles']
+        process_ts = cfg['data_processing_details']['process_ts']
 
-        if process_percentiles:
-            self.process_percentiles()
         if process_mean:
             self.process_mean()
-        if process_std:
-            self.process_std()
+        if process_percentiles:
+            self.process_percentiles()
+        if process_ts:
+            self.process_ts()
 
         return self.result_df
 
@@ -58,8 +58,8 @@ class ProcessDataframe:
             percentile = int(T * p / 100)
 
             # processing Tth Percentile of the Upper Bounds.(There may be multiple bounds here.)
-            grouped_upper = sorted_upper.groupby("N", as_index=False)
-            grouped_lower = sorted_lower.groupby("N", as_index=False)
+            grouped_upper = sorted_upper.groupby(["N", "BoundType"], as_index=False)
+            grouped_lower = sorted_lower.groupby(["N", "BoundType"], as_index=False)
             percentile_data = grouped_upper.nth(percentile)
             percentile_data = percentile_data.append(grouped_lower.nth(percentile), ignore_index=True)
             percentile_data["BoundType"] = str(p) + "th Percentile" + percentile_data["BoundType"]
@@ -72,14 +72,14 @@ class ProcessDataframe:
         """
 
         # Applying some transformations for meanhere.
-        mean_observations = self.df.groupby(["BoundType","N"], as_index=False)["Observations"].mean()
+        mean_observations = self.df.groupby(["BoundType", "N"], as_index=False)["Observations"].mean()
         mean_observations["BoundType"] = "Mean" + mean_observations["BoundType"]
         mean_observations["Unit"] = 1
         self.result_df = self.result_df.append(mean_observations, ignore_index=True)
 
-    def process_std(self):
+    def process_ts(self):
         """
-        This std values values.
+        This function processes original ts plot for Seaborn.
         """
 
         # For the std ts plot we just need to use the original data frame.
