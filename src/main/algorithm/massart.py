@@ -2,8 +2,6 @@ from algo_base import AlgoBase
 import numpy as np
 import pandas as pd
 import yaml
-from main.utils import sample_generator
-
 
 class Massart(AlgoBase):
     """
@@ -15,10 +13,11 @@ class Massart(AlgoBase):
     def compute_mean(self):
         bound_limits = list()
 
+        # Computation start from 3 and above since there is no point calculating
+        #  Massart for very low values of N.
         for N in range(3, self.N + 1):
-            sg = sample_generator.SampleGenerator(N, self.T)
             e = self.compute_epsilon(N)
-            samples = sg.normal()
+            samples = self.sample_generator.generate_samples(N, self.T)
 
             for T in range(self.T):
                 m_l, m_u = self.estimate_bound(N, samples[:, T], e)
@@ -38,7 +37,8 @@ class Massart(AlgoBase):
         Computes epsilon (Bound parameter for Chernoff-Hoeffding bounds.
         :return: Returns epsilon.
         """
-        intermediate = - np.log((1 - self.confidence) / 2.0) / (2.0 * N)
+        intermediate = np.log((1 - self.confidence) / 2.0) / (-2.0 * N)
+        # print(np.sqrt(intermediate))
         return np.sqrt(intermediate)
 
     def estimate_bound(self, N, samples, e):
@@ -55,13 +55,13 @@ class Massart(AlgoBase):
         a = cfg['sample_statistics']['left_support']
         b = cfg['sample_statistics']['right_support']
         order_stats = np.sort(samples)
-        m_l = a * e + order_stats[0] * (1.0 / N)
+        m_l = (a * e) + (order_stats[0] * (1.0 / N))
         m_u = order_stats[0] * max(0.0, (1.0 / N) - e)
 
         for i in range(1, N):
-            m_l += (min(1, (i / N) + e) - min(1, (i - 1) / N + e)) * order_stats[i]
-            m_u += (max(0, (i / N) - e) - max(0, (i - 1) / N - e)) * order_stats[i]
+            m_l += (min(1, (i / N) + e) - min(1, ((i - 1) / N) + e)) * order_stats[i]
+            m_u += (max(0, (i / N) - e) - max(0, ((i - 1) / N) - e)) * order_stats[i]
 
-        m_u += e * b
+        m_u += e*b
 
         return m_l, m_u
