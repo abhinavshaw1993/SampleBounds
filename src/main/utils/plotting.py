@@ -20,7 +20,7 @@ def plot_statistic(df, N, T, true_mean=None, **kwargs):
     plt.subplot()
 
     if true_mean:
-        plt.plot(np.arange(1, N+1), [true_mean]*N, label="True Mean", color='black')
+        plt.plot(np.arange(1, N+1), [true_mean]*N, label="True Mean", color='black', linewidth=5.0)
 
     try:
         assert isinstance(df, pd.DataFrame)
@@ -29,7 +29,7 @@ def plot_statistic(df, N, T, true_mean=None, **kwargs):
         print e
 
     sns.tsplot(data=df, time="N", value="Observations", condition="BoundType", unit="Unit", ci=[100], err_style=err_style
-            , interpolate=interpolate, n_boot=T)
+            , interpolate=interpolate, n_boot=T, color="black")
 
     plt.title("Bounds on " + kwargs['statistic'])
     plt.show()
