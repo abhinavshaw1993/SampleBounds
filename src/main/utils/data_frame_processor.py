@@ -59,26 +59,28 @@ class ProcessDataframe:
 
         for p in percentiles:
             percentile = int(T * p / 100)
+            print("Percentile values", percentile)
 
             # processing Tth Percentile of the Upper Bounds.(There may be multiple bounds here.)
             grouped_upper = sorted_upper.groupby(["N", "BoundType"], as_index=False)
             grouped_lower = sorted_lower.groupby(["N", "BoundType"], as_index=False)
-            percentile_data = grouped_upper.nth(percentile)
-            percentile_data = percentile_data.append(grouped_lower.nth(percentile), ignore_index=True)
-            percentile_data["BoundType"] = str(p) + "th Percentile" + percentile_data["BoundType"]
+            percentile_data = grouped_lower.nth(percentile)
+            percentile_data = percentile_data.append(grouped_upper.nth(percentile), ignore_index=True)
+            percentile_data["BoundType"] = percentile_data["BoundType"] + " " + str(p) + "th Percentile"
             percentile_data["Unit"] = 1
             self.result_df = self.result_df.append(percentile_data, ignore_index=True)
+            self.result_df.to_csv("/home/abhinav/Desktop/percentile.csv")
 
     def process_mean(self):
         """
         This function processes mean values.
         """
-
-        # Applying some transformations for meanhere.
+        # Applying some transformations for mean here.
         mean_observations = self.df.groupby(["BoundType", "N"], as_index=False)["Observations"].mean()
-        mean_observations["BoundType"] = "Mean" + mean_observations["BoundType"]
+        mean_observations["BoundType"] =  mean_observations["BoundType"] + " Mean"
         mean_observations["Unit"] = 1
         self.result_df = self.result_df.append(mean_observations, ignore_index=True)
+        self.result_df.to_csv("/home/abhinav/Desktop/mean.csv")
 
     def process_ts(self):
         """
@@ -95,6 +97,6 @@ class ProcessDataframe:
 
         # Applying some transformations for Variance here.
         var_observations = self.df.groupby(["BoundType", "N"], as_index=False)["Observations"].var()
-        var_observations["BoundType"] = "Var" + var_observations["BoundType"]
+        var_observations["BoundType"] =  var_observations["BoundType"] + " Var"
         var_observations["Unit"] = 1
         self.result_df = self.result_df.append(var_observations, ignore_index=True)
