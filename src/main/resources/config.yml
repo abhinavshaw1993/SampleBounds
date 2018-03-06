@@ -9,27 +9,15 @@ sample_statistics:
   confidence: 0.95
   statistic: mean
   seed: 100
-  distribution: "beta"
+  distribution: "uniform"
 plot_configs:
   err_style: "ci_bars"
   interpolate: True
   percentile: 95
-uniform:
-  left_support: 0.0
-  right_support: 1.0
-  true_mean: 0.5
-normal:
-  left_support: 0.0
-  right_support: 1.0
-  true_mean: 0.5
-  scale: 0.1
-exponential:
-  loc: 0.0
-  scale: 0.1
-  true_mean: 0.1
+  color_type: "same bound"
 data_processing_details:
   process_mean: True
   process_var: False
-  process_percentiles: False
+  process_percentiles: True
   process_ts: False
-  percentiles: [95]
+  percentiles: [15]
