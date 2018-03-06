@@ -19,7 +19,7 @@ class CLT(AlgoBase):
 
                 df = N - 1  # Degrees of freedom for t distribution
 
-                z_score = t.ppf(q=(self.confidence + (1 - self.confidence) / 2.0), df=df, loc=est_mean, scale=est_std)
+                z_score = t.ppf(q=(self.confidence + (1 - self.confidence) / 2.0), df=df)
 
                 if self.bound == "upper":
                     boundsLimits.append([N, est_mean + est_mean_error * z_score, 'Upper CLT', trials + 1])

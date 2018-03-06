@@ -11,10 +11,10 @@ The module will no start returning the mean as well, since it is hard to control
 
 """
 
-import numpy as np
 from scipy.stats import truncnorm
 from scipy.stats import truncexpon
 from scipy.stats import beta
+from scipy.stats import uniform
 
 
 class SampleGenerator:
@@ -53,9 +53,8 @@ class SampleGenerator:
         :return: samples from the normal distribution with support [self.left, self.right]
         """
 
-        np.random.seed(self.random_seed)
         a, b = (self.left - self.mean) / self.stdev, (self.right - self.mean) / self.stdev
-        samples = truncnorm.rvs(a=a, b=b, loc=self.mean, scale=self.stdev, size=(N, T))
+        samples = truncnorm.rvs(a=a, b=b, loc=self.mean, scale=self.stdev, size=(N, T), random_state=self.random_seed)
         return samples
 
     def uniform(self, N, T):
@@ -63,10 +62,11 @@ class SampleGenerator:
         :return: samples from the uniform distribution with support [self.left, self.right]
         """
 
-        np.random.seed(self.random_seed)
         a = self.left
         b = self.right
-        return np.random.uniform(a, b, size=(N, T))
+        samples = uniform.rvs(loc=self.left, scale=self.right, size=(N,T), random_state=self.random_seed)
+
+        return samples
 
     def exponential(self, N, T):
         """
@@ -78,16 +78,14 @@ class SampleGenerator:
         """
 
         # truncexpon moves from 0 to b.
-        np.random.seed(self.random_seed)
-        return truncexpon.rvs(b=self.right, loc=self.mean, scale=self.stdev, size=(N, T))
+        return truncexpon.rvs(b=self.right, loc=self.mean, scale=self.stdev, size=(N, T), random_state=self.random_seed)
 
     def beta(self, N, T):
         """
         :return: samples from the beta distribution with with the following parameters
         a=0.5, b=1, loc=left support, scale=right support (Already tested with these params, they give us a beta with 0,1 support)
         """
-        np.random.seed(self.random_seed)
-        return beta.rvs(a=0.5, b=1, loc=self.left, scale=self.right, size=(N, T))
+        return beta.rvs(a=0.5, b=1, loc=self.left, scale=self.right, size=(N, T), random_state=self.random_seed)
 
     def true_mean(self):
         def true_mean_normal():

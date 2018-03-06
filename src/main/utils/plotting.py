@@ -18,11 +18,12 @@ def plot_statistic(df, N, T, true_mean=None, **kwargs):
     err_style = cfg['plot_configs']['err_style']
     interpolate = cfg['plot_configs']['interpolate']
     color_type = cfg['plot_configs']['color_type']
+    underlying_distribution = cfg['sample_statistics']['distribution']
     plt.figure(figsize=(20, 20))
     plt.subplot()
 
     if true_mean:
-        plt.plot(np.arange(1, N+1), [true_mean]*N, label="True Mean", color='black', linewidth=2.0)
+        plt.plot(np.arange(1, N+1), [true_mean]*N, label="True Mean", color='black', linewidth=0.5)
 
     try:
         assert isinstance(df, pd.DataFrame)
@@ -30,13 +31,13 @@ def plot_statistic(df, N, T, true_mean=None, **kwargs):
     except Exception as e:
         print e
 
-    # Setting color pallet for different lines
+    # # Setting color pallet for different lines
     unique_conditions = list(df.BoundType.unique())
-    colors = get_colors_for_plot(unique_conditions, type=color_type)
+    # colors = get_colors_for_plot(unique_conditions, type=color_type)
 
     # Plotting ts plot.
-    ax = sns.tsplot(data=df, time="N", value="Observations", condition="BoundType", unit="Unit", ci=[100], err_style=err_style, color=colors)
-    plt.title("Bounds on " + kwargs['statistic'] + " with " + str(T) + " Trials")
+    ax = sns.tsplot(data=df, time="N", value="Observations", condition="BoundType", unit="Unit", ci=[100], err_style=err_style)
+    plt.title("Bounds on " + kwargs['statistic'] + " with " + str(T) + " Trials \n with underlying distribution as " + underlying_distribution)
 
     # set_line_width(ax, plt)
     min_width, max_width = 1, 4
@@ -70,6 +71,7 @@ def get_colors_for_plot(unique_condition, type):
             i = 0
             while i < len(unique_condition) / 2:
                 color = next(color_pallet)
+                print("Color", color)
                 color_dict[unique_condition[i]], color_dict[unique_condition[i + 2]] = color, color
                 i += 1
 
