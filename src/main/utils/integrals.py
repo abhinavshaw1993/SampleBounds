@@ -1,3 +1,6 @@
+import numpy as np
+
+
 def mean_integral(N, cdf_values, left=0.0, right=1.0):
     """
     Computes the mean from cdf of a distribution having positive finite support
@@ -16,3 +19,31 @@ def mean_integral(N, cdf_values, left=0.0, right=1.0):
         cdf_integral += ((cdf_x0 + cdf_x1) / 2.0) * dx
 
     return right - cdf_integral
+
+
+# def mean_integral_v2(cdf_values, ord_stats):
+#     """
+#     Computes the mean from cdf of a distribution having support [0, 1]
+#     :param cdf_values: Sorted values of the cdf of a distribution defined on the support
+#     :param ord_stats: Order statistics of the samples
+#     :return:
+#     """
+#     cdf_values = np.hstack((0.0, cdf_values))
+#     samples = np.hstack((0.0, ord_stats))
+#     numerator = np.diff(cdf_values)
+#     denominator = np.diff(samples)
+#
+#     pdf_values = numerator / denominator
+#     mean = np.sum(np.multiply(ord_stats, pdf_values)) / np.sum(pdf_values)
+#     return mean
+
+
+def mean_integral_v2(cdf_values, ord_stats):
+    cdf_values = np.hstack((0.0, cdf_values))
+    samples = np.hstack((0.0, ord_stats))
+
+    Fx = cdf_values[:-1] + np.diff(cdf_values) * 0.5
+    dx = np.diff(samples)
+
+    mean = np.sum(dx - np.multiply(Fx, dx))
+    return mean
