@@ -38,9 +38,16 @@ def mean_integral(N, cdf_values, left=0.0, right=1.0):
 #     return mean
 
 
-def mean_integral_v2(cdf_values, ord_stats):
-    cdf_values = np.hstack((0.0, cdf_values))
-    samples = np.hstack((0.0, ord_stats))
+def mean_integral_v2(cdf_values, ord_stats, bound_type='lower'):
+    # if bound_type == 'lower':
+    #     cdf_values = np.hstack((cdf_values, 1.0))
+    #     samples = np.hstack((ord_stats, 1.0))
+    # else:
+    #     cdf_values = np.hstack((0.0, cdf_values))
+    #     samples = np.hstack((0.0, ord_stats))
+
+    cdf_values = np.hstack((0.0, cdf_values, 1.0))
+    samples = np.hstack((0.0, ord_stats, 1.0))
 
     Fx = cdf_values[:-1] + np.diff(cdf_values) * 0.5
     dx = np.diff(samples)
