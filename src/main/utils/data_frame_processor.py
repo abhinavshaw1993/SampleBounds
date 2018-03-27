@@ -56,6 +56,7 @@ class ProcessDataframe:
         # Processing Percentiles.
         sorted_upper = self.df.loc[self.df['BoundType'].str.contains("Upper")].sort_values("Observations")
         sorted_lower = self.df.loc[self.df['BoundType'].str.contains("Lower")].sort_values("Observations", ascending=False)
+        sorted_lower.to_csv("/home/abhinav/Desktop/SortedLower.csv")
 
         for p in percentiles:
             percentile = int(T * p / 100)

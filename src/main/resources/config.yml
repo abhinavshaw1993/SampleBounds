@@ -16,7 +16,7 @@ plot_configs:
   percentile: 95
   color_type: "same percentile"
 data_processing_details:
-  process_mean: False
+  process_mean: True
   process_var: False
   process_percentiles: True
   process_ts: False

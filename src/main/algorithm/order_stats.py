@@ -41,18 +41,24 @@ class ORDSTAT(AlgoBase):
             ord_stats = np.sort(samples, 0)
             upper, lower = self.compute_cdf(N)
 
+
             for trials in xrange(self.T):
                 if self.bound == "upper":
-                    mean = mean_integral_v2(cdf_values=lower, ord_stats=ord_stats[:, trials])
+                    mean = mean_integral_v2(cdf_values=lower, ord_stats=ord_stats[:, trials], bound_type="upper")
                     boundsLimits.append([N, mean, 'Upper ORDSTAT', trials + 1])
                 elif self.bound == "lower":
-                    mean = mean_integral_v2(cdf_values=upper, ord_stats=ord_stats[:, trials])
+                    mean = mean_integral_v2(cdf_values=upper, ord_stats=ord_stats[:, trials], bound_type="lower")
                     boundsLimits.append([N, mean, 'Lower ORDSTAT', trials + 1])
                 else:
-                    upper_mean = mean_integral_v2(cdf_values=lower, ord_stats=ord_stats[:, trials])
-                    lower_mean = mean_integral_v2(cdf_values=upper, ord_stats=ord_stats[:, trials])
+                    upper_mean = mean_integral_v2(cdf_values=lower, ord_stats=ord_stats[:, trials], bound_type="upper")
+                    lower_mean = mean_integral_v2(cdf_values=upper, ord_stats=ord_stats[:, trials], bound_type="lower")
+
                     boundsLimits.append([N, upper_mean, 'Upper ORDSTAT', trials + 1])
                     boundsLimits.append([N, lower_mean, 'Lower ORDSTAT', trials + 1])
+
+            if (N == 1):
+                np.savetxt("/home/abhinav/Desktop/OrderStats.csv", np.transpose(ord_stats), delimiter=",")
+
 
         boundsDF = pd.DataFrame(data=boundsLimits, columns=["N", "Observations", "BoundType", "Unit"])
         return boundsDF
