@@ -56,6 +56,8 @@ class ProcessDataframe:
         # Processing Percentiles.
         sorted_upper = self.df.loc[self.df['BoundType'].str.contains("Upper")].sort_values("Observations")
         sorted_lower = self.df.loc[self.df['BoundType'].str.contains("Lower")].sort_values("Observations", ascending=False)
+
+        # Saving data to file.
         sorted_lower.to_csv("/home/abhinav/Desktop/SortedLower.csv")
 
         for p in percentiles:
@@ -67,8 +69,16 @@ class ProcessDataframe:
             grouped_lower = sorted_lower.groupby(["N", "BoundType"], as_index=False)
             percentile_data = grouped_lower.nth(percentile)
             percentile_data = percentile_data.append(grouped_upper.nth(percentile), ignore_index=True)
-            percentile_data["BoundType"] = percentile_data["BoundType"] + " " + str(p) + "th Percentile"
+
+            # Indexing for upper and lower bounds.
+            upper = percentile_data["BoundType"].str.contains("Upper")
+            lower = percentile_data["BoundType"].str.contains("Lower")
+
+            # updating names for upper lower and setting unit to only 1.
+            percentile_data.loc[upper, "BoundType"] = percentile_data.loc[upper, "BoundType"] + " " + str(p) + "th Percentile"
+            percentile_data.loc[lower, "BoundType"] = percentile_data.loc[lower, "BoundType"] + " " + str(100-p) + "th Percentile"
             percentile_data["Unit"] = 1
+
             self.result_df = self.result_df.append(percentile_data, ignore_index=True)
             self.result_df.to_csv("/home/abhinav/Desktop/percentile.csv")
 
