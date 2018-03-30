@@ -44,7 +44,6 @@ class ProcessDataframe:
         This function processes percentiles
         :return: Processed Data Frame.
         """
-
         # Reading the Config File.
         with open("../resources/config.yml", "r") as ymlfile:
             cfg = yaml.load(ymlfile)
@@ -58,7 +57,7 @@ class ProcessDataframe:
         sorted_lower = self.df.loc[self.df['BoundType'].str.contains("Lower")].sort_values("Observations", ascending=False)
 
         # Saving data to file.
-        sorted_lower.to_csv("/home/abhinav/Desktop/SortedLower.csv")
+        # sorted_lower.to_csv("/home/abhinav/Desktop/SortedLower.csv")
 
         for p in percentiles:
             percentile = int(T * p / 100)
@@ -80,7 +79,7 @@ class ProcessDataframe:
             percentile_data["Unit"] = 1
 
             self.result_df = self.result_df.append(percentile_data, ignore_index=True)
-            self.result_df.to_csv("/home/abhinav/Desktop/percentile.csv")
+            # self.result_df.to_csv("/home/abhinav/Desktop/percentile.csv")
 
     def process_mean(self):
         """
@@ -88,16 +87,15 @@ class ProcessDataframe:
         """
         # Applying some transformations for mean here.
         mean_observations = self.df.groupby(["BoundType", "N"], as_index=False)["Observations"].mean()
-        mean_observations["BoundType"] =  mean_observations["BoundType"] + " Mean"
+        mean_observations["BoundType"] = mean_observations["BoundType"] + " Mean"
         mean_observations["Unit"] = 1
         self.result_df = self.result_df.append(mean_observations, ignore_index=True)
-        self.result_df.to_csv("/home/abhinav/Desktop/mean.csv")
+        # self.result_df.to_csv("/home/abhinav/Desktop/mean.csv")
 
     def process_ts(self):
         """
         This function processes original ts plot for Seaborn.
         """
-
         # For the std ts plot we just need to use the original data frame.
         self.result_df = self.result_df.append(self.df, ignore_index=True)
 
@@ -105,7 +103,6 @@ class ProcessDataframe:
         """
         This function processes variance values.
         """
-
         # Applying some transformations for Variance here.
         var_observations = self.df.groupby(["BoundType", "N"], as_index=False)["Observations"].var()
         var_observations["BoundType"] =  var_observations["BoundType"] + " Var"
