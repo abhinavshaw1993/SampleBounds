@@ -13,7 +13,6 @@ class ORDSTAT(AlgoBase):
         # NOTE: Current implementation works for only N = 100
         delta_values = pd.read_csv("../resources/delta_values.csv")
         delta = delta_values[delta_values["N"] == N]["delta"]
-        # print "delta for " + str(N) + " is: ", np.float(delta)
         return np.float(delta)
 
     def compute_cdf(self, N):
@@ -41,7 +40,6 @@ class ORDSTAT(AlgoBase):
             ord_stats = np.sort(samples, 0)
             upper, lower = self.compute_cdf(N)
 
-
             for trials in xrange(self.T):
                 if self.bound == "upper":
                     mean = mean_integral_v2(cdf_values=lower, ord_stats=ord_stats[:, trials], bound_type="upper")
@@ -55,10 +53,6 @@ class ORDSTAT(AlgoBase):
 
                     boundsLimits.append([N, upper_mean, 'Upper ORDSTAT', trials + 1])
                     boundsLimits.append([N, lower_mean, 'Lower ORDSTAT', trials + 1])
-
-            if (N == 1):
-                np.savetxt("/home/abhinav/Desktop/OrderStats.csv", np.transpose(ord_stats), delimiter=",")
-
 
         boundsDF = pd.DataFrame(data=boundsLimits, columns=["N", "Observations", "BoundType", "Unit"])
         return boundsDF
