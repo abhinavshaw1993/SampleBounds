@@ -15,7 +15,7 @@ class Massart(AlgoBase):
 
         # Computation start from 3 and above since there is no point calculating
         #  Massart for very low values of N.
-        for N in range(3, self.N + 1):
+        for N in range(1, self.N + 1):
             e = self.compute_epsilon(N)
             samples = self.sample_generator.generate_samples(N, self.T)
 
@@ -59,8 +59,8 @@ class Massart(AlgoBase):
         m_u = order_stats[0] * max(0, (1.0 / N) - e)
 
         for i in range(1, int(N)):
-            m_l += (min(1, (i / N) + e) - min(1, (i - 1) / N + e)) * order_stats[i]
-            m_u += (max(0, (i / N) - e) - max(0, (i - 1) / N - e)) * order_stats[i]
+            m_l += (min(1, ((i+1) / N) + e) - min(1, ((i+1) - 1) / N + e)) * order_stats[i]
+            m_u += (max(0, ((i+1) / N) - e) - max(0, ((i+1) - 1) / N - e)) * order_stats[i]
 
         m_u += e * b
 
