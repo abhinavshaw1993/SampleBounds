@@ -27,6 +27,7 @@ class ProcessDataframe:
         process_var = cfg['data_processing_details']['process_var']
         process_percentiles = cfg['data_processing_details']['process_percentiles']
         process_ts = cfg['data_processing_details']['process_ts']
+        process_median = cfg['data_processing_details']['process_median']
 
         if process_mean:
             self.process_mean()
@@ -36,6 +37,8 @@ class ProcessDataframe:
             self.process_percentiles()
         if process_ts:
             self.process_ts()
+        if process_median:
+            self.process_median()
 
         return self.result_df
 
@@ -91,6 +94,15 @@ class ProcessDataframe:
         mean_observations["Unit"] = 1
         self.result_df = self.result_df.append(mean_observations, ignore_index=True)
         # self.result_df.to_csv("/home/abhinav/Desktop/mean.csv")
+
+    def process_median(self):
+        """
+        This function processes median values
+        """
+        median_observations = self.df.groupby(["BoundType", "N"], as_index=False)["Observations"].median()
+        median_observations["BoundType"] = median_observations["BoundType"] + " Median"
+        median_observations["Unit"] = 1
+        self.result_df = self.result_df.append(median_observations, ignore_index=True)
 
     def process_ts(self):
         """

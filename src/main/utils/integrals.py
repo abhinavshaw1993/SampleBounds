@@ -39,15 +39,25 @@ def mean_integral(N, cdf_values, left=0.0, right=1.0):
 
 
 def mean_integral_v2(cdf_values, ord_stats, bound_type='lower'):
-
     cdf_values = np.hstack((0.0, cdf_values, 1.0))
     samples = np.hstack((0.0, ord_stats, 1.0))
     Fx = cdf_values[:-1]
-
     if (bound_type == "lower"):
         Fx[0] = Fx[1]
-
     dx = np.diff(samples)
     mean = 1 - np.sum(np.multiply(Fx, dx))
 
     return mean
+
+
+def variance_integral(cdf_values, ord_stats, bound_type='lower'):
+    cdf_values = np.hstack((0.0, cdf_values, 1.0))
+    samples = np.hstack((0.0, ord_stats, 1.0))
+    Fx = cdf_values[:-1]
+    if bound_type == "lower":
+        Fx[0] = Fx[1]
+    dx = np.diff(samples)
+    part2 = 1 - np.sum(np.multiply(Fx, dx))
+    part1 = np.sum(np.multiply(samples, dx)) - np.sum(np.multiply(Fx, dx))
+    variance = 2 * part1 - np.square(part2)
+    return variance
