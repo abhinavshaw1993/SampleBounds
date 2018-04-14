@@ -60,8 +60,6 @@ class ProcessDataframe:
         sorted_lower = self.df.loc[self.df['BoundType'].str.contains("Lower")].sort_values("Observations", ascending=False)
 
         # Saving data to file.
-        # sorted_lower.to_csv("/home/abhinav/Desktop/SortedLower.csv")
-
         for p in percentiles:
             percentile = int(T * p / 100)
             print("Percentile values", percentile)
@@ -82,7 +80,6 @@ class ProcessDataframe:
             percentile_data["Unit"] = 1
 
             self.result_df = self.result_df.append(percentile_data, ignore_index=True)
-            # self.result_df.to_csv("/home/abhinav/Desktop/percentile.csv")
 
     def process_mean(self):
         """
@@ -93,7 +90,6 @@ class ProcessDataframe:
         mean_observations["BoundType"] = mean_observations["BoundType"] + " Mean"
         mean_observations["Unit"] = 1
         self.result_df = self.result_df.append(mean_observations, ignore_index=True)
-        # self.result_df.to_csv("/home/abhinav/Desktop/mean.csv")
 
     def process_median(self):
         """
@@ -117,6 +113,6 @@ class ProcessDataframe:
         """
         # Applying some transformations for Variance here.
         var_observations = self.df.groupby(["BoundType", "N"], as_index=False)["Observations"].var()
-        var_observations["BoundType"] =  var_observations["BoundType"] + " Var"
+        var_observations["BoundType"] = var_observations["BoundType"] + " Var"
         var_observations["Unit"] = 1
         self.result_df = self.result_df.append(var_observations, ignore_index=True)

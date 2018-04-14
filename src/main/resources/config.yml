@@ -14,11 +14,11 @@ plot_configs:
   err_style: "ci_bars"
   interpolate: True
   percentile: 95
-  color_type: "same percentile"
+  color_type: "same"
 data_processing_details:
   process_mean: True
+  process_median: True
   process_var: False
-  process_percentiles: True
+  process_percentiles: False
   process_ts: False
   percentiles: [5]
-  process_median: False
