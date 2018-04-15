@@ -408,10 +408,10 @@ class SampleGenerator:
             return t.var(df=5, loc=0.5, scale=0.005)
 
         def true_variance_double_exponential():
-            return 0.5
+            return 0.0004
 
         def true_variance_mix_double_exponential():
-            return 0.5
+            return 0.05
 
         def true_variance_mix_gauss_2_sym_uni():
             return 0.3125
@@ -426,16 +426,16 @@ class SampleGenerator:
             return 0.05687
 
         def true_variance_mix_gauss_4_sym_multi():
-            return 0.5
+            return 0.0391
 
         def true_variance_mix_gauss_4_sym_uni():
-            return 0.5
+            return 0.12083
 
         def true_variance_mix_gauss_4_nonsym_uni():
-            return 0.4750
+            return 0.07462
 
         def true_variance_mix_gauss_4_nonsym_multi():
-            return 0.4867
+            return 0.05749
 
         compute_true_variance = {
             "normal": true_variance_normal,
