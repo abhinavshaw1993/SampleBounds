@@ -386,3 +386,74 @@ class SampleGenerator:
         }
 
         return compute_true_mean[self.distribution]()
+
+    def true_variance(self):
+        def true_variance_normal():
+            a, b = (self.left - self.mean) / self.stdev, (self.right - self.mean) / self.stdev
+            return truncnorm.var(a, b, loc=self.mean, scale=self.stdev)
+
+        def true_variance_uniform():
+            return np.square(self.right - self.left) / 12.0
+
+        def true_variance_exponential():
+            return truncexpon.var(b=self.right, loc=self.mean, scale=self.stdev)
+
+        def true_variance_beta():
+            return beta.var(a=0.5, b=1, loc=self.left, scale=self.right)
+
+        def true_variance_student_t_3():
+            return t.var(df=3, loc=0.5, scale=0.005)
+
+        def true_variance_student_t_5():
+            return t.var(df=5, loc=0.5, scale=0.005)
+
+        def true_variance_double_exponential():
+            return 0.5
+
+        def true_variance_mix_double_exponential():
+            return 0.5
+
+        def true_variance_mix_gauss_2_sym_uni():
+            return 0.3125
+
+        def true_variance_mix_gauss_2_sym_multi():
+            return 0.0725
+
+        def true_variance_mix_gauss_2_nonsym_uni():
+            return 0.24
+
+        def true_variance_mix_gauss_2_nonsym_multi():
+            return 0.05687
+
+        def true_variance_mix_gauss_4_sym_multi():
+            return 0.5
+
+        def true_variance_mix_gauss_4_sym_uni():
+            return 0.5
+
+        def true_variance_mix_gauss_4_nonsym_uni():
+            return 0.4750
+
+        def true_variance_mix_gauss_4_nonsym_multi():
+            return 0.4867
+
+        compute_true_variance = {
+            "normal": true_variance_normal,
+            "uniform": true_variance_uniform,
+            "exponential": true_variance_exponential,
+            "beta": true_variance_beta,
+            "student_t_3": true_variance_student_t_3,
+            "student_t_5": true_variance_student_t_5,
+            "double_exponential": true_variance_double_exponential,
+            "mix_double_exponential": true_variance_mix_double_exponential,
+            "mix_gauss_2_sym_uni": true_variance_mix_gauss_2_sym_uni,
+            "mix_gauss_2_sym_multi": true_variance_mix_gauss_2_sym_multi,
+            "mix_gauss_2_nonsym_uni": true_variance_mix_gauss_2_nonsym_uni,
+            "mix_gauss_2_nonsym_multi": true_variance_mix_gauss_2_nonsym_multi,
+            "mix_gauss_4_sym_multi": true_variance_mix_gauss_4_sym_multi,
+            "mix_gauss_4_sym_uni": true_variance_mix_gauss_4_sym_uni,
+            "mix_gauss_4_nonsym_uni": true_variance_mix_gauss_4_nonsym_uni,
+            "mix_gauss_4_nonsym_multi": true_variance_mix_gauss_4_nonsym_multi
+        }
+
+        return compute_true_variance[self.distribution]()
