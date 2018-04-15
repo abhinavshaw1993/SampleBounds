@@ -31,59 +31,49 @@ def plot_statistic(df, N, T, true_mean=None, **kwargs):
     except Exception as e:
         print e
 
-    # # Setting color pallet for different lines
-    unique_conditions = list(df.BoundType.unique())
-    # colors = get_colors_for_plot(unique_conditions, type=color_type)
-
     # Plotting ts plot.
-    ax = sns.tsplot(data=df, time="N", value="Observations", condition="BoundType", unit="Unit", ci=[100], err_style=err_style)
+    if color_type == "same":
+        # Setting color pallet for different lines
+        unique_conditions = list(df.BoundType.unique())
+        colors = get_colors_for_plot(unique_conditions)
+        ax = sns.tsplot(data=df, time="N", value="Observations", condition="BoundType", unit="Unit", ci=[100], color=colors ,
+                        err_style=err_style)
+    else:
+        ax = sns.tsplot(data=df, time="N", value="Observations", condition="BoundType", unit="Unit", ci=[100], err_style=err_style)
     plt.title("Bounds on " + kwargs['statistic'] + " with " + str(T) + " Trials \n with underlying distribution as " + underlying_distribution)
 
-    # set_line_width(ax, plt)
-    min_width, max_width = 1, 4
-    lines = ax.lines
-    width = max_width
-
-    for i in xrange(1, len(unique_conditions), 2):
-        plt.setp(lines[i], linewidth=width)
-        plt.setp(lines[i+1], linewidth=width)
-        width = ((width - min_width) / 2.0) + min_width
-
-    # # Setting line transparency.
-    # for i in xrange(3, len(unique_conditions), 2):
-    #     lines[i].set_linestyle("--")
-    #     lines[i+1].set_linestyle("--")
+    # # set_line_width(ax, plt)
+    # min_width, max_width = 1, 4
+    # lines = ax.lines
+    # width = max_width
+    #
+    # for i in xrange(1, len(unique_conditions), 2):
+    #     plt.setp(lines[i], linewidth=width)
+    #     plt.setp(lines[i+1], linewidth=width)
+    #     width = ((width - min_width) / 2.0) + min_width
+    #
+    # # # Setting line transparency.
+    # # for i in xrange(3, len(unique_conditions), 2):
+    # #     lines[i].set_linestyle("--")
+    # #     lines[i+1].set_linestyle("--")
 
     plt.show()
 
 
-def get_colors_for_plot(unique_condition, type):
+def get_colors_for_plot(unique_condition):
     """
     :param unique_condition: List of unique cnoditions in the dataframe for plot.
     :param type: The way you want to set colors.
     :return: Color Dictionary for ts plot.
     """
-    pallet = ["green", "greyish", "windows blue", "amber", "faded green", "dusty purple"]
+    pallet = ["green", "red", "windows blue", "amber", "dusty purple"]
     color_pallet = itertools.cycle(sns.xkcd_palette(pallet))
     color_dict = {}
-    if type == "same bound":
-        if len(unique_condition) % 2 == 0:
-            i = 0
-            while i < len(unique_condition) / 2:
-                color = next(color_pallet)
-                print("Color", color)
-                color_dict[unique_condition[i]], color_dict[unique_condition[i + 2]] = color, color
-                i += 1
+    unique_condition.sort()
 
-    if type == "same percentile":
-        # for same percentile
-        if len(unique_condition) % 2 == 0:
-            i = 0
-            while i < len(unique_condition):
-                color = next(color_pallet)
-                print(unique_condition[i], unique_condition[i+1])
-                color_dict[unique_condition[i]], color_dict[unique_condition[i+1]] = color, color
-                i += 2
+    for i in range(len(unique_condition)/2):
+        color = next(color_pallet)
+        color_dict[unique_condition[i]], color_dict[unique_condition[len(unique_condition)/2+i]] = color, color
 
     return color_dict
 
