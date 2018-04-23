@@ -1,4 +1,5 @@
 from algo_base import AlgoBase
+from statsmodels.distributions.empirical_distribution import ECDF
 import numpy as np
 import pandas as pd
 import yaml
@@ -9,6 +10,28 @@ class Massart(AlgoBase):
     The computation is only possible for 3 or more samples.
     :return: Return DataFrame used for Time Series plot Seaborn.
     """
+    def compute_cdf(self, samples):
+
+        # Extracting N from
+        N, T = samples.shape
+        e = self.compute_epsilon(N)
+        linspace = np.linspace(0, 1, N)
+        upper_envelope = lower_envelope = None
+        F_x = np.zeros(samples.shape)
+
+        for i in range(T):
+            ecdf = ECDF(samples[:, i])
+            F_x[:, i] = ecdf(linspace)
+
+        if self.bound == "upper":
+            upper_envelope = F_x + e
+        elif self.bound == "lower":
+            lower_envelope = F_x - e
+        else:
+            upper_envelope = F_x + e
+            lower_envelope = F_x - e
+
+        return upper_envelope, lower_envelope
 
     def compute_mean(self):
         bound_limits = list()

@@ -57,12 +57,12 @@ class BoundsExperiment:
 
         # Initializing Sample Generator
         self.sg = SampleGenerator(self.left, self.right, self.mean, self.stdev, self.distribution, self.random_seed)
-        if(self.statistic=="mean"):
+        if self.statistic == "mean":
             self.true_mean = self.sg.true_mean()
-            self.true_variance= None
-        if(self.statistic=="variance"):
+            self.true_variance = None
+        if self.statistic == "variance":
             self.true_variance = self.sg.true_variance()
-            self.true_mean=None
+            self.true_mean = None
 
     def run_experiments(self):
         result_df = []
