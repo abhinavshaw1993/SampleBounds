@@ -96,15 +96,16 @@ class BoundsExperiment:
                 result_df.append(data)
 
         result = pd.concat(result_df, ignore_index=True)
-
+        print ("obtained result")
         # Creating instance of DataProcessor.
         proc_df = ProcessDataframe(result)
+        print ("data frame processed")
         result = proc_df.process_dataframe(result)
-
+        print ("going for plotting")
         # Plotting Statistics.
         plot_statistic(result, N=self.N, T=self.T, true_mean=self.true_mean, true_variance=self.true_variance , statistic=self.statistic)
 
-"""
+
 if __name__ == "__main__":
     #B = BoundsExperiment(algo=["ORDSTAT","CLT","CHERNOFF_HOEFFDING","MASSART"])
     # B = BoundsExperiment(algo=["CLT"])
@@ -113,4 +114,3 @@ if __name__ == "__main__":
     # B = BoundsExperiment(algo=["MASSART"])
     # B = BoundsExperiment(algo=["BOOTSTRAP"])
     B.run_experiments()
-"""

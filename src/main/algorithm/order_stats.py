@@ -81,6 +81,6 @@ class ORDSTAT(AlgoBase):
 
                     boundsLimits.append([N, upper_mean, 'Upper ORDSTAT', trials + 1])
                     boundsLimits.append([N, lower_mean, 'Lower ORDSTAT', trials + 1])
-
+        print ("boundsLimits obtained")
         boundsDF = pd.DataFrame(data=boundsLimits, columns=["N", "Observations", "BoundType", "Unit"])
         return boundsDF
