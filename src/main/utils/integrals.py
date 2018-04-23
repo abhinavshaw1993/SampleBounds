@@ -60,7 +60,8 @@ def variance_integral(cdf_values, ord_stats, bound_type='lower'):
     x= samples[:-1]
     mean = 1 - np.sum(np.multiply(Fx, dx))
     mean_part = np.square(mean)
-    part1= 2*np.multiply(x,dx)
-    part2= np.multiply(Fx,part1)
+    x_dx = np.multiply(x, dx)
+    part1= 2*np.sum(x_dx)
+    part2= 2*np.sum(np.multiply(Fx,x_dx))
     variance=part1-part2-mean_part
     return variance
