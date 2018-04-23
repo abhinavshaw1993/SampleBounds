@@ -24,15 +24,12 @@ class ProcessDataframe:
             cfg = yaml.load(ymlfile)
 
         process_mean = cfg['data_processing_details']['process_mean']
-        process_var = cfg['data_processing_details']['process_var']
         process_percentiles = cfg['data_processing_details']['process_percentiles']
         process_ts = cfg['data_processing_details']['process_ts']
         process_median = cfg['data_processing_details']['process_median']
 
         if process_mean:
             self.process_mean()
-        if process_var:
-            self.process_var()
         if process_percentiles:
             self.process_percentiles()
         if process_ts:
@@ -106,13 +103,3 @@ class ProcessDataframe:
         """
         # For the std ts plot we just need to use the original data frame.
         self.result_df = self.result_df.append(self.df, ignore_index=True)
-
-    def process_var(self):
-        """
-        This function processes variance values.
-        """
-        # Applying some transformations for Variance here.
-        var_observations = self.df.groupby(["BoundType", "N"], as_index=False)["Observations"].var()
-        var_observations["BoundType"] = var_observations["BoundType"] + " Var"
-        var_observations["Unit"] = 1
-        self.result_df = self.result_df.append(var_observations, ignore_index=True)

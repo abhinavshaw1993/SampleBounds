@@ -393,6 +393,7 @@ class SampleGenerator:
             return truncnorm.var(a, b, loc=self.mean, scale=self.stdev)
 
         def true_variance_uniform():
+            print ("Inside Uniform")
             return np.square(self.right - self.left) / 12.0
 
         def true_variance_exponential():

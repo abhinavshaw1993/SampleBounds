@@ -53,11 +53,14 @@ def mean_integral_v2(cdf_values, ord_stats, bound_type='lower'):
 def variance_integral(cdf_values, ord_stats, bound_type='lower'):
     cdf_values = np.hstack((0.0, cdf_values, 1.0))
     samples = np.hstack((0.0, ord_stats, 1.0))
-    Fx = cdf_values[:-1]
-    if bound_type == "lower":
+    Fx = cdf_values[:-1] # dropping last 1.0 entry
+    if bound_type == "lower": #as we want to maximize F(X) so as to minimize 1-F(X), thus closer mean
         Fx[0] = Fx[1]
     dx = np.diff(samples)
-    part2 = 1 - np.sum(np.multiply(Fx, dx))
-    part1 = np.sum(np.multiply(samples, dx)) - np.sum(np.multiply(Fx, dx))
-    variance = 2 * part1 - np.square(part2)
+    x= samples[:-1]
+    mean = 1 - np.sum(np.multiply(Fx, dx))
+    mean_part = np.square(mean)
+    part1= 2*np.multiply(x,dx)
+    part2= np.multiply(Fx,part1)
+    variance=part1-part2-mean_part
     return variance
