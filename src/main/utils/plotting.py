@@ -59,8 +59,10 @@ def plot_statistic(df, N, T, true_mean=None, true_variance=None, **kwargs):
     # # for i in xrange(3, len(unique_conditions), 2):
     # #     lines[i].set_linestyle("--")
     # #     lines[i+1].set_linestyle("--")
-    path="C:/Users/Shruti Jadon/Desktop/Plots/Mean/"
+    path="C:/Users/Shruti Jadon/Desktop/Plots/Variance/"
     #plt.savefig(path+cfg['sample_statistics']['distribution']+".png")
+    # path="C:/Users/Shruti Jadon/Desktop/Plots/Mean/"
+    plt.savefig(path+cfg['sample_statistics']['distribution']+".png")
     plt.show()
 
 
