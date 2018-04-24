@@ -60,8 +60,8 @@ def plot_statistic(df, N, T, true_mean=None, true_variance=None, **kwargs):
     # #     lines[i].set_linestyle("--")
     # #     lines[i+1].set_linestyle("--")
     path="C:/Users/Shruti Jadon/Desktop/Plots/Mean/"
-    plt.savefig(path+cfg['sample_statistics']['distribution']+".png")
-    #plt.show()
+    #plt.savefig(path+cfg['sample_statistics']['distribution']+".png")
+    plt.show()
 
 
 def get_colors_for_plot(unique_condition):

@@ -1,9 +1,9 @@
 data_processing_details:
   percentiles: [5]
-  process_mean: false
+  process_mean: true
   process_median: false
-  process_percentiles: true
+  process_percentiles: false
   process_ts: false
 plot_configs: {color_type: same, err_style: ci_bars, interpolate: true, percentile: 95}
 sample_statistics: {N: 100, T: 1000, bound: both, confidence: 0.95, distribution: uniform,
-  left_support: 0.0, mean: 0.5, right_support: 1.0, seed: 100, statistic: variance, stdev: 0.1}
+  left_support: 0.0, mean: 0.5, right_support: 1.0, seed: 100, statistic: mean, stdev: 0.1}
